@@ -1,0 +1,172 @@
+import time     # time module for creating delay
+
+accounts = []   # list in which details of individuals can be stored
+
+
+# For creating list from a file in which user details in stored
+with open('user_details.txt') as f:
+    for line in f:
+          accounts.append(line.strip())
+
+for i in range(len(accounts)):
+    accounts[i] = accounts[i].split()
+
+
+
+# it creates and stores account details
+
+def create_account():
+    global accounts
+    
+    def fName():
+        global first_name
+        while True:
+            first_name = input('Enter your First Name : ')
+            if ' ' in first_name:
+                print('Please enter a valid name which does not contain any spaces or special characters')
+                continue
+            elif first_name == '':
+                print('Please enter a first name.')
+                continue
+            else :
+                first_name = first_name.title()
+                break
+    def lName():
+        global last_name
+        while True:
+            last_name = input('Enter your Last Name : ')
+            if ' ' in last_name:
+                print('Please enter a valid name which does not contain any spaces or special characters')
+                continue
+            elif last_name == '':
+                print('Please enter a last name.')
+                continue
+            else :
+                last_name = last_name.title()
+                break
+    def email_func():
+        global email
+        while True:
+            email = input('Enter your email : ')
+            if ' ' in email:
+                print('Please enter a valid name which does not contain any spaces or special characters')
+                continue
+            elif email == '':
+                print('Please enter an email.')
+                continue
+            elif '@' not in email or '.com' not in email:
+                print('Please make sure that your Email ID contains \'@\' and \'.com\' in it.')
+                continue    
+            else :
+                break
+    def password_func():
+        global password
+        while True:
+            password = input('Enter your password : ')
+            if ' ' in password:
+                print('Please enter a password which does not contain any spaces.')
+                continue
+            elif password == '':
+                print('Please enter a password.')
+                continue
+            else :
+                break
+    def username_func():
+        global username
+        is_username_duplicate = True
+        while is_username_duplicate:
+            is_duplicate = True
+            username = input('Enter your username : ')
+            for i in accounts:
+                if username in i[3]:
+                    print('This username already exists.')
+                    print('Please enter another uesrname.')
+                    is_duplicate = False
+                    break
+            if ' ' in username:
+                print('Username cannot contain spaces.')
+                continue
+            elif username == '':
+                print('Please enter a username.')
+            if is_duplicate:
+                is_username_duplicate = False
+        print('Username successfully created.')
+        
+    fName()
+    lName()
+    email_func()
+    username_func()
+    password_func()
+
+    accounts.append([first_name, last_name, email, username, password])
+    print('Congratulations, you have successfully created your account.')
+
+
+
+   
+# it is used for logging into a previously created account
+def login():
+    global accounts
+    
+    repeat_login = True
+    while repeat_login:
+        username_inp = input('Enter your username : ')
+        for i in accounts:
+            if username_inp in i[3]:
+                print('Username successfully verified.')
+                repeat_login = False
+                break
+        else:
+            print('No username named that found.')
+        
+    while True:
+        password_inp = input('Enter your password : ')
+        if password_inp == i[4]:
+            print('Congratulations, you have been successfully logged in into your account.')
+            break
+        else:
+            print('You have entered wrong password.')
+            print('Please try again.')
+
+
+# Main program starts form here
+print('Welcome to our Login Screen')
+# time.sleep(1.5)
+
+# This will ask the user if he has already created the account or not
+while True:
+    account = input('Do you have an account [y/n]')
+    if account.lower() == 'y':
+        print('Great, you are good to go.')
+        # time.sleep(1.5)
+        print('Just enter your details and you are good to go.')
+        # time.sleep(1.5)
+        login()
+        break
+    elif account.lower() == 'n':
+        print('No problem')
+        # time.sleep(1)
+        print('Just enter your details and you are good to go.')
+        # time.sleep(1.5)
+        create_account()
+        break
+    else:
+        print('Please answer either \'y\' or \'n\'')
+        # time.sleep(1.5)
+        continue
+
+
+# For storing data into a file from a list
+
+string = ''
+for element in accounts:
+    string += ' '.join(element)
+    string += '\n'
+
+with open('user_details.txt', 'w') as f:
+    f.write(string)
+
+
+
+
+
